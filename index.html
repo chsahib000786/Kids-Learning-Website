@@ -1,29 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Learning Hub</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kids Learning Hub | Fun Learning for Kids</title>
+
+<meta name="description" content="Kids Learning Hub offers fun stories, math activities, alphabet and phonics, worksheets, coloring pages, puzzles, games, measurement tools and free printables for kids.">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7fbff;
+    color: #243447;
+}
+
+header {
+    background: #ffffff;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 55px 20px;
+    background: #eaf6ff;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin: 0 0 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+.section {
+    max-width: 1100px;
+    margin: auto;
+    padding: 45px 20px;
+}
+
+.section h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    padding: 25px 15px;
+    text-align: center;
+    border-radius: 16px;
+    border: 1px solid #e5eaf0;
+    text-decoration: none;
+    color: #243447;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.icon {
+    display: block;
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.about {
+    text-align: center;
+    max-width: 750px;
+    margin: auto;
+    line-height: 1.7;
+}
+
+footer {
+    background: #ffffff;
+    text-align: center;
+    padding: 25px 15px;
+    border-top: 1px solid #e5eaf0;
+    margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 450px) {
+    .categories {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <h1>Kids Learning Hub</h1>
+<header>
+    <div class="logo">Kids Learning Hub</div>
+</header>
 
-    <p>Fun and educational resources for kids.</p>
+<section class="hero">
+    <h1>Learn, Play & Discover!</h1>
+    <p>
+        Fun and educational activities designed to help kids learn
+        through stories, games, worksheets and creative activities.
+    </p>
+</section>
+
+<section class="section">
 
     <h2>Explore Our Learning Activities</h2>
 
-    <ul>
-        <li>Stories</li>
-        <li>Math</li>
-        <li>Alphabet &amp; Phonics</li>
-        <li>Worksheets</li>
-        <li>Coloring Pages</li>
-        <li>Puzzles &amp; Games</li>
-        <li>Time &amp; Measurement Tools</li>
-        <li>Free Printables</li>
-    </ul>
+    <div class="categories">
+
+        <a class="card" href="#">
+            <span class="icon">📖</span>
+            Stories
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">🔢</span>
+            Math
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">🔤</span>
+            Alphabet & Phonics
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">📝</span>
+            Worksheets
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">🎨</span>
+            Coloring Pages
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">🧩</span>
+            Puzzles & Games
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">⏰</span>
+            Time & Measurement Tools
+        </a>
+
+        <a class="card" href="#">
+            <span class="icon">🖨️</span>
+            Free Printables
+        </a>
+
+    </div>
+
+</section>
+
+<section class="section">
+    <div class="about">
+
+        <h2>About Kids Learning Hub</h2>
+
+        <p>
+            Kids Learning Hub is a simple place for children,
+            parents and teachers to discover fun educational
+            activities and free learning resources.
+        </p>
+
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Kids Learning Hub. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
