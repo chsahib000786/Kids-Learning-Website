@@ -1,444 +1,299 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="math-game">
+  <style>
+    #math-game {
+      font-family: Arial, sans-serif;
+      max-width: 650px;
+      margin: 20px auto;
+      padding: 20px;
+      text-align: center;
+      background: #f7fbff;
+      border-radius: 28px;
+    }
 
-<title>Math Calculator for Kids</title>
+    #math-game h1 {
+      margin: 5px 0;
+      font-size: 34px;
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+    #math-game .intro {
+      color: #555;
+      margin-bottom: 20px;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #e8f7ff, #fff8df);
-  color: #222;
-  text-align: center;
-}
+    #math-game .choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
-}
+    #math-game button {
+      border: 0;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 18px;
+    }
 
-h1 {
-  color: #1976d2;
-  font-size: 34px;
-  margin-bottom: 8px;
-}
+    #math-game .choice {
+      padding: 22px 10px;
+      font-size: 22px;
+      background: white;
+      border: 3px solid #dcecff;
+      box-shadow: 0 4px 10px rgba(0,0,0,.08);
+    }
 
-.subtitle {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
+    #math-game .choice:hover {
+      transform: translateY(-2px);
+    }
 
-.operations {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
-}
+    #math-game .game {
+      display: none;
+      background: white;
+      padding: 22px;
+      border-radius: 24px;
+    }
 
-.operation-btn {
-  border: none;
-  border-radius: 12px;
-  padding: 14px 5px;
-  font-size: 20px;
-  font-weight: bold;
-  background: white;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-  cursor: pointer;
-}
+    #math-game .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-.operation-btn.active {
-  background: #1976d2;
-  color: white;
-}
+    #math-game .question {
+      font-size: 44px;
+      font-weight: bold;
+      margin: 25px 0;
+    }
 
-.level {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+    #math-game .answer {
+      width: 85%;
+      max-width: 320px;
+      padding: 15px;
+      border: 4px solid #ffb300;
+      background: #fff9d9;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 28px;
+      outline: none;
+    }
 
-.question {
-  background: white;
-  border-radius: 20px;
-  padding: 25px 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
-}
+    #math-game .check {
+      margin-top: 15px;
+      padding: 15px 35px;
+      font-size: 20px;
+      background: #4caf50;
+      color: white;
+    }
 
-.problem {
-  font-size: 42px;
-  font-weight: bold;
-  margin: 10px 0 20px;
-}
+    #math-game .message {
+      min-height: 60px;
+      margin-top: 18px;
+      font-size: 30px;
+      font-weight: bold;
+    }
 
-.answer-label {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
+    #math-game .next,
+    #math-game .back {
+      padding: 12px 25px;
+      font-size: 18px;
+      margin: 5px;
+    }
 
-#answer {
-  width: 85%;
-  max-width: 350px;
-  padding: 16px;
-  border: 4px solid #1976d2;
-  border-radius: 15px;
-  font-size: 30px;
-  text-align: center;
-  outline: none;
-  background: #fffde7;
-  box-shadow: 0 0 12px rgba(25,118,210,0.25);
-}
+    #math-game .next {
+      background: #ff9800;
+      color: white;
+    }
 
-#answer:focus {
-  border-color: #ff9800;
-  background: #fff8c6;
-}
+    #math-game .back {
+      background: #e9eef5;
+    }
 
-.keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-width: 350px;
-  margin: 20px auto;
-}
+    @media (max-width: 480px) {
+      #math-game {
+        padding: 14px;
+      }
 
-.key {
-  border: none;
-  border-radius: 14px;
-  padding: 18px;
-  font-size: 24px;
-  font-weight: bold;
-  background: #ffffff;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  cursor: pointer;
-}
+      #math-game .choices {
+        grid-template-columns: 1fr;
+      }
 
-.key:active {
-  transform: scale(0.95);
-}
+      #math-game .question {
+        font-size: 36px;
+      }
+    }
+  </style>
 
-.clear {
-  background: #ffdddd;
-}
+  <h1>🌟 Math Adventure</h1>
+  <p class="intro">Choose a game and start learning!</p>
 
-.back {
-  background: #fff0c2;
-}
-
-.check {
-  grid-column: span 3;
-  background: #43a047;
-  color: white;
-  font-size: 24px;
-}
-
-.score {
-  margin-top: 15px;
-  font-size: 19px;
-  font-weight: bold;
-}
-
-.message {
-  min-height: 75px;
-  margin-top: 15px;
-  font-size: 34px;
-  font-weight: bold;
-  color: #2e7d32;
-}
-
-.next-btn {
-  display: none;
-  border: none;
-  background: #ff9800;
-  color: white;
-  border-radius: 14px;
-  padding: 14px 30px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-@media (max-width: 500px) {
-  h1 {
-    font-size: 28px;
-  }
-
-  .problem {
-    font-size: 34px;
-  }
-
-  .operation-btn {
-    font-size: 17px;
-    padding: 12px 3px;
-  }
-
-  #answer {
-    font-size: 26px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-  <h1>🧮 Math Practice</h1>
-
-  <div class="subtitle">
-    Choose an operation and start practicing!
+  <div class="choices">
+    <button class="choice" data-op="+">➕<br>Addition</button>
+    <button class="choice" data-op="-">➖<br>Subtraction</button>
+    <button class="choice" data-op="*">✖️<br>Multiplication</button>
+    <button class="choice" data-op="/">➗<br>Division</button>
   </div>
 
-  <div class="operations">
-    <button class="operation-btn active" onclick="setOperation('+', this)">➕</button>
-    <button class="operation-btn" onclick="setOperation('-', this)">➖</button>
-    <button class="operation-btn" onclick="setOperation('*', this)">✖️</button>
-    <button class="operation-btn" onclick="setOperation('/', this)">➗</button>
-  </div>
-
-  <div class="level">
-    Level: <span id="level">1</span>
-  </div>
-
-  <div class="question">
-
-    <div class="problem" id="problem">
-      2 + 3 = ?
+  <div class="game">
+    <div class="top">
+      <span>⭐ Score: <span class="score">0</span></span>
+      <span>📚 Level: <span class="level">1</span></span>
     </div>
 
-    <div class="answer-label">
-      ✏️ Write your answer here
-    </div>
+    <div class="question"></div>
 
     <input
-      id="answer"
-      type="text"
+      class="answer"
+      type="number"
       inputmode="numeric"
-      placeholder="Your Answer"
-      autocomplete="off"
+      placeholder="Write answer"
+      aria-label="Your answer"
     >
 
-    <div class="keypad">
+    <br>
 
-      <button class="key" onclick="pressNumber('1')">1</button>
-      <button class="key" onclick="pressNumber('2')">2</button>
-      <button class="key" onclick="pressNumber('3')">3</button>
+    <button class="check">Check Answer ✓</button>
 
-      <button class="key" onclick="pressNumber('4')">4</button>
-      <button class="key" onclick="pressNumber('5')">5</button>
-      <button class="key" onclick="pressNumber('6')">6</button>
+    <div class="message" aria-live="polite"></div>
 
-      <button class="key" onclick="pressNumber('7')">7</button>
-      <button class="key" onclick="pressNumber('8')">8</button>
-      <button class="key" onclick="pressNumber('9')">9</button>
-
-      <button class="key clear" onclick="clearAnswer()">C</button>
-      <button class="key" onclick="pressNumber('0')">0</button>
-      <button class="key back" onclick="backspace()">⌫</button>
-
-      <button class="key check" onclick="checkAnswer()">
-        ✅ Check Answer
-      </button>
-
-    </div>
-
-    <div class="message" id="message"></div>
-
-    <button class="next-btn" id="nextBtn" onclick="newQuestion()">
+    <button class="next" style="display:none;">
       Next Question ➜
     </button>
 
-    <div class="score">
-      Questions: <span id="questions">0</span>
-      &nbsp; | &nbsp;
-      Correct: <span id="score">0</span>
-    </div>
-
+    <button class="back">
+      ← Choose Another Game
+    </button>
   </div>
 
+  <script>
+    (() => {
+      const root = document.getElementById("math-game");
+
+      const choices = root.querySelectorAll(".choice");
+      const choicesBox = root.querySelector(".choices");
+      const game = root.querySelector(".game");
+      const question = root.querySelector(".question");
+      const answer = root.querySelector(".answer");
+      const check = root.querySelector(".check");
+      const next = root.querySelector(".next");
+      const back = root.querySelector(".back");
+      const message = root.querySelector(".message");
+      const scoreText = root.querySelector(".score");
+      const levelText = root.querySelector(".level");
+
+      let operation = "+";
+      let correctAnswer = 0;
+      let score = 0;
+      let completed = 0;
+      let answered = false;
+
+      function randomNumber(max) {
+        return Math.floor(Math.random() * max) + 1;
+      }
+
+      function makeQuestion() {
+        answered = false;
+        answer.value = "";
+        message.textContent = "";
+        next.style.display = "none";
+        check.style.display = "inline-block";
+        answer.disabled = false;
+
+        const level = Math.floor(completed / 5) + 1;
+        levelText.textContent = level;
+
+        const max = Math.min(10 + (level - 1) * 5, 50);
+
+        let a = randomNumber(max);
+        let b = randomNumber(max);
+
+        if (operation === "+") {
+          correctAnswer = a + b;
+          question.textContent = `${a} + ${b} = ?`;
+        }
+
+        if (operation === "-") {
+          if (b > a) [a, b] = [b, a];
+          correctAnswer = a - b;
+          question.textContent = `${a} − ${b} = ?`;
+        }
+
+        if (operation === "*") {
+          a = randomNumber(Math.min(10 + level, 20));
+          b = randomNumber(Math.min(10 + level, 20));
+          correctAnswer = a * b;
+          question.textContent = `${a} × ${b} = ?`;
+        }
+
+        if (operation === "/") {
+          b = randomNumber(Math.min(10 + level, 20));
+          correctAnswer = randomNumber(Math.min(10 + level, 20));
+          a = b * correctAnswer;
+          question.textContent = `${a} ÷ ${b} = ?`;
+        }
+
+        answer.focus();
+      }
+
+      choices.forEach(button => {
+        button.addEventListener("click", () => {
+          operation = button.dataset.op;
+          score = 0;
+          completed = 0;
+          scoreText.textContent = score;
+
+          choicesBox.style.display = "none";
+          game.style.display = "block";
+
+          makeQuestion();
+        });
+      });
+
+      check.addEventListener("click", () => {
+        if (answered) return;
+
+        if (answer.value.trim() === "") {
+          message.textContent = "✏️ Write your answer!";
+          message.style.color = "#e65100";
+          answer.focus();
+          return;
+        }
+
+        const userAnswer = Number(answer.value);
+
+        if (userAnswer === correctAnswer) {
+          answered = true;
+          score++;
+          completed++;
+
+          scoreText.textContent = score;
+
+          message.textContent = "🎉 GREAT WORK! 🎉";
+          message.style.color = "#2e7d32";
+
+          check.style.display = "none";
+          next.style.display = "inline-block";
+          answer.disabled = true;
+        } else {
+          message.textContent = "💪 Try Again!";
+          message.style.color = "#d32f2f";
+          answer.select();
+        }
+      });
+
+      next.addEventListener("click", makeQuestion);
+
+      answer.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          check.click();
+        }
+      });
+
+      back.addEventListener("click", () => {
+        game.style.display = "none";
+        choicesBox.style.display = "grid";
+        message.textContent = "";
+      });
+    })();
+  </script>
 </div>
-
-<script>
-
-let operation = "+";
-let num1 = 0;
-let num2 = 0;
-let correctAnswer = 0;
-
-let level = 1;
-let questions = 0;
-let score = 0;
-
-const answerBox = document.getElementById("answer");
-const problem = document.getElementById("problem");
-const message = document.getElementById("message");
-const nextBtn = document.getElementById("nextBtn");
-
-function setOperation(op, button) {
-
-  operation = op;
-
-  document.querySelectorAll(".operation-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  button.classList.add("active");
-
-  newQuestion();
-}
-
-function generateNumber(max) {
-  return Math.floor(Math.random() * max) + 1;
-}
-
-function newQuestion() {
-
-  answerBox.value = "";
-  message.textContent = "";
-  nextBtn.style.display = "none";
-
-  /*
-    Difficulty increases every 5 questions.
-    Level 1 = small numbers
-    Level 2 = bigger numbers
-    Level 3 = even bigger numbers
-    And continues upward.
-  */
-
-  level = Math.floor(questions / 5) + 1;
-
-  document.getElementById("level").textContent = level;
-
-  let maxNumber = 10 + ((level - 1) * 10);
-
-  num1 = generateNumber(maxNumber);
-  num2 = generateNumber(maxNumber);
-
-  if (operation === "+") {
-
-    correctAnswer = num1 + num2;
-
-  } else if (operation === "-") {
-
-    // Keep subtraction positive for young learners
-    if (num2 > num1) {
-      let temp = num1;
-      num1 = num2;
-      num2 = temp;
-    }
-
-    correctAnswer = num1 - num2;
-
-  } else if (operation === "*") {
-
-    // Multiplication starts smaller
-    let maxMultiply = Math.min(10 + level, 20);
-
-    num1 = generateNumber(maxMultiply);
-    num2 = generateNumber(maxMultiply);
-
-    correctAnswer = num1 * num2;
-
-  } else if (operation === "/") {
-
-    // Create division questions with whole-number answers
-    num2 = generateNumber(Math.min(10 + level, 20));
-    correctAnswer = generateNumber(Math.min(10 + level, 20));
-
-    num1 = num2 * correctAnswer;
-  }
-
-  let symbol = operation;
-
-  if (operation === "*") {
-    symbol = "×";
-  }
-
-  if (operation === "/") {
-    symbol = "÷";
-  }
-
-  problem.textContent =
-    num1 + " " + symbol + " " + num2 + " = ?";
-}
-
-function pressNumber(number) {
-
-  answerBox.value += number;
-
-  answerBox.focus();
-}
-
-function clearAnswer() {
-
-  answerBox.value = "";
-  answerBox.focus();
-}
-
-function backspace() {
-
-  answerBox.value =
-    answerBox.value.slice(0, -1);
-
-  answerBox.focus();
-}
-
-function checkAnswer() {
-
-  let userAnswer = Number(answerBox.value);
-
-  if (answerBox.value.trim() === "") {
-
-    message.textContent = "✏️ Write your answer!";
-    message.style.color = "#e65100";
-    return;
-  }
-
-  questions++;
-
-  document.getElementById("questions").textContent = questions;
-
-  if (userAnswer === correctAnswer) {
-
-    score++;
-
-    document.getElementById("score").textContent = score;
-
-    message.textContent = "🎉 GREAT WORK! 🎉";
-    message.style.color = "#2e7d32";
-
-    nextBtn.style.display = "inline-block";
-
-    // Increase level after every 5 questions
-    level = Math.floor(questions / 5) + 1;
-    document.getElementById("level").textContent = level;
-
-  } else {
-
-    message.textContent =
-      "❌ Try Again!";
-
-    message.style.color = "#d32f2f";
-
-    // Do not count a wrong answer as completed
-    questions--;
-
-    document.getElementById("questions").textContent = questions;
-  }
-}
-
-// Start first question
-newQuestion();
-
-</script>
-
-</body>
-</html>
