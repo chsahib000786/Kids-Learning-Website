@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fun Addition Game</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+  background: linear-gradient(135deg, #fff4b8, #b9f3ff);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.game {
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  border-radius: 35px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  border: 6px solid #ffcf33;
+}
+
+h1 {
+  margin: 5px 0;
+  font-size: 38px;
+  color: #ff6b6b;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.score-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.info {
+  flex: 1;
+  background: #e9f9ff;
+  border-radius: 18px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.question-box {
+  background: #fff1a8;
+  border-radius: 28px;
+  padding: 25px 15px;
+  margin-bottom: 20px;
+}
+
+.question {
+  font-size: 55px;
+  font-weight: bold;
+  color: #444;
+}
+
+.objects {
+  font-size: 38px;
+  min-height: 50px;
+  margin-top: 10px;
+}
+
+.answer-area {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+input {
+  width: 180px;
+  padding: 15px;
+  border: 4px solid #8bd3ff;
+  border-radius: 18px;
+  font-size: 28px;
+  text-align: center;
+  outline: none;
+}
+
+button {
+  border: none;
+  border-radius: 18px;
+  padding: 15px 25px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.check {
+  background: #67d66b;
+  color: white;
+  box-shadow: 0 5px 0 #43a047;
+}
+
+.check:active {
+  transform: translateY(4px);
+  box-shadow: none;
+}
+
+.message {
+  min-height: 40px;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.stars {
+  font-size: 28px;
+  min-height: 40px;
+}
+
+.next {
+  background: #ff9f43;
+  color: white;
+  display: none;
+  box-shadow: 0 5px 0 #e67e22;
+}
+
+.restart {
+  background: #9b59b6;
+  color: white;
+  display: none;
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  .question {
+    font-size: 42px;
+  }
+
+  .answer-area {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+  <h1>🌟 Fun Addition! 🌟</h1>
+
+  <div class="subtitle">
+    Let's add the numbers and have fun! 🎈
+  </div>
+
+  <div class="score-box">
+    <div class="info">
+      ⭐ Score: <span id="score">0</span>
+    </div>
+
+    <div class="info">
+      📝 Question: <span id="questionNo">1</span>/10
+    </div>
+  </div>
+
+  <div class="question-box">
+
+    <div class="question" id="question">
+      2 + 3 = ?
+    </div>
+
+    <div class="objects" id="objects">
+      🍎 🍎 + 🍎 🍎 🍎
+    </div>
+
+  </div>
+
+  <div class="answer-area">
+
+    <input
+      type="number"
+      id="answer"
+      placeholder="Your answer"
+      onkeydown="if(event.key==='Enter') checkAnswer()"
+    >
+
+    <button class="check" onclick="checkAnswer()">
+      ✅ Check
+    </button>
+
+  </div>
+
+  <div class="stars" id="stars"></div>
+
+  <div class="message" id="message">
+    🌈 You can do it!
+  </div>
+
+  <button class="next" id="next" onclick="nextQuestion()">
+    Next Question ➡️
+  </button>
+
+  <button class="restart" id="restart" onclick="restartGame()">
+    🔄 Play Again
+  </button>
+
+</div>
+
+<script>
+
+let score = 0;
+let questionNumber = 1;
+let num1;
+let num2;
+let correctAnswer;
+let answered = false;
+
+const fruits = ["🍎", "🍊", "⭐", "🐟", "🧸", "🌸", "🍓"];
+
+function createQuestion() {
+
+  answered = false;
+
+  num1 = Math.floor(Math.random() * 6) + 1;
+  num2 = Math.floor(Math.random() * 6) + 1;
+
+  correctAnswer = num1 + num2;
+
+  document.getElementById("question").textContent =
+    num1 + " + " + num2 + " = ?";
+
+  let fruit = fruits[Math.floor(Math.random() * fruits.length)];
+
+  document.getElementById("objects").textContent =
+    fruit.repeat(num1) + "  +  " + fruit.repeat(num2);
+
+  document.getElementById("answer").value = "";
+  document.getElementById("answer").disabled = false;
+
+  document.getElementById("message").textContent =
+    "🌈 You can do it!";
+
+  document.getElementById("stars").textContent = "";
+
+  document.getElementById("next").style.display = "none";
+
+  document.getElementById("answer").focus();
+}
+
+function checkAnswer() {
+
+  if (answered) return;
+
+  let userAnswer =
+    Number(document.getElementById("answer").value);
+
+  if (document.getElementById("answer").value === "") {
+    document.getElementById("message").textContent =
+      "💡 Type your answer first!";
+    return;
+  }
+
+  if (userAnswer === correctAnswer) {
+
+    answered = true;
+
+    score++;
+
+    document.getElementById("score").textContent = score;
+
+    document.getElementById("stars").textContent =
+      "⭐⭐⭐⭐⭐";
+
+    document.getElementById("message").textContent =
+      "🎉 Amazing! That's correct!";
+
+    document.getElementById("answer").disabled = true;
+
+    if (questionNumber < 10) {
+      document.getElementById("next").style.display = "inline-block";
+    } else {
+      finishGame();
+    }
+
+  } else {
+
+    document.getElementById("stars").textContent =
+      "💪 ⭐ 💪";
+
+    document.getElementById("message").textContent =
+      "😊 Almost! Try again!";
+  }
+}
+
+function nextQuestion() {
+
+  questionNumber++;
+
+  document.getElementById("questionNo").textContent =
+    questionNumber;
+
+  createQuestion();
+}
+
+function finishGame() {
+
+  document.getElementById("message").textContent =
+    "🏆 You finished the game! Great Job!";
+
+  document.getElementById("stars").textContent =
+    "🌟 🌟 🌟 🌟 🌟";
+
+  document.getElementById("restart").style.display =
+    "inline-block";
+}
+
+function restartGame() {
+
+  score = 0;
+  questionNumber = 1;
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("questionNo").textContent = questionNumber;
+
+  document.getElementById("restart").style.display = "none";
+
+  createQuestion();
+}
+
+createQuestion();
+
+</script>
+
+</body>
+</html>
