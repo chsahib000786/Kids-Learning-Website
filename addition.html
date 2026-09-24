@@ -1,299 +1,341 @@
-<div id="math-game">
-  <style>
-    #math-game {
-      font-family: Arial, sans-serif;
-      max-width: 650px;
-      margin: 20px auto;
-      padding: 20px;
-      text-align: center;
-      background: #f7fbff;
-      border-radius: 28px;
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    #math-game h1 {
-      margin: 5px 0;
-      font-size: 34px;
-    }
+<title>Number Catch - Math Game</title>
 
-    #math-game .intro {
-      color: #555;
-      margin-bottom: 20px;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    #math-game .choices {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eaf7ff;
+}
 
-    #math-game button {
-      border: 0;
-      cursor: pointer;
-      font-weight: bold;
-      border-radius: 18px;
-    }
+#game {
+  max-width: 700px;
+  margin: auto;
+  padding: 15px;
+  text-align: center;
+}
 
-    #math-game .choice {
-      padding: 22px 10px;
-      font-size: 22px;
-      background: white;
-      border: 3px solid #dcecff;
-      box-shadow: 0 4px 10px rgba(0,0,0,.08);
-    }
+.header {
+  background: white;
+  border-radius: 24px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
 
-    #math-game .choice:hover {
-      transform: translateY(-2px);
-    }
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+}
 
-    #math-game .game {
-      display: none;
-      background: white;
-      padding: 22px;
-      border-radius: 24px;
-    }
+.header p {
+  margin: 7px 0 0;
+  color: #607d8b;
+}
 
-    #math-game .top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
+.stats {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
 
-    #math-game .question {
-      font-size: 44px;
-      font-weight: bold;
-      margin: 25px 0;
-    }
+.stat {
+  flex: 1;
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
 
-    #math-game .answer {
-      width: 85%;
-      max-width: 320px;
-      padding: 15px;
-      border: 4px solid #ffb300;
-      background: #fff9d9;
-      border-radius: 16px;
-      text-align: center;
-      font-size: 28px;
-      outline: none;
-    }
+#mission {
+  background: white;
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 12px;
+  font-size: 23px;
+  font-weight: bold;
+}
 
-    #math-game .check {
-      margin-top: 15px;
-      padding: 15px 35px;
-      font-size: 20px;
-      background: #4caf50;
-      color: white;
-    }
+#playArea {
+  position: relative;
+  height: 390px;
+  background: #ffffff;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 5px solid #d7efff;
+  box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
 
-    #math-game .message {
-      min-height: 60px;
-      margin-top: 18px;
-      font-size: 30px;
-      font-weight: bold;
-    }
+.item {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff3cd;
+  font-size: 31px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,.12);
+  transition: transform .15s;
+}
 
-    #math-game .next,
-    #math-game .back {
-      padding: 12px 25px;
-      font-size: 18px;
-      margin: 5px;
-    }
+.item:active {
+  transform: scale(.85);
+}
 
-    #math-game .next {
-      background: #ff9800;
-      color: white;
-    }
+#message {
+  min-height: 65px;
+  padding: 12px;
+  font-size: 30px;
+  font-weight: bold;
+}
 
-    #math-game .back {
-      background: #e9eef5;
-    }
+#next {
+  display: none;
+  border: 0;
+  border-radius: 16px;
+  padding: 14px 28px;
+  background: #ff9800;
+  color: white;
+  font-size: 19px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    @media (max-width: 480px) {
-      #math-game {
-        padding: 14px;
-      }
+@media (max-width: 500px) {
+  #playArea {
+    height: 350px;
+  }
 
-      #math-game .choices {
-        grid-template-columns: 1fr;
-      }
+  .header h1 {
+    font-size: 27px;
+  }
 
-      #math-game .question {
-        font-size: 36px;
-      }
-    }
-  </style>
+  #mission {
+    font-size: 19px;
+  }
 
-  <h1>🌟 Math Adventure</h1>
-  <p class="intro">Choose a game and start learning!</p>
+  .item {
+    width: 58px;
+    height: 58px;
+    font-size: 27px;
+  }
+}
+</style>
+</head>
 
-  <div class="choices">
-    <button class="choice" data-op="+">➕<br>Addition</button>
-    <button class="choice" data-op="-">➖<br>Subtraction</button>
-    <button class="choice" data-op="*">✖️<br>Multiplication</button>
-    <button class="choice" data-op="/">➗<br>Division</button>
+<body>
+
+<div id="game">
+
+  <div class="header">
+    <h1>🎯 Number Catch!</h1>
+    <p>Catch the numbers and become a Math Star!</p>
   </div>
 
-  <div class="game">
-    <div class="top">
-      <span>⭐ Score: <span class="score">0</span></span>
-      <span>📚 Level: <span class="level">1</span></span>
+  <div class="stats">
+    <div class="stat">
+      ⭐ Score<br>
+      <span id="score">0</span>
     </div>
 
-    <div class="question"></div>
+    <div class="stat">
+      🏆 Level<br>
+      <span id="level">1</span>
+    </div>
 
-    <input
-      class="answer"
-      type="number"
-      inputmode="numeric"
-      placeholder="Write answer"
-      aria-label="Your answer"
-    >
-
-    <br>
-
-    <button class="check">Check Answer ✓</button>
-
-    <div class="message" aria-live="polite"></div>
-
-    <button class="next" style="display:none;">
-      Next Question ➜
-    </button>
-
-    <button class="back">
-      ← Choose Another Game
-    </button>
+    <div class="stat">
+      🎯 Caught<br>
+      <span id="caught">0</span>
+    </div>
   </div>
 
-  <script>
-    (() => {
-      const root = document.getElementById("math-game");
+  <div id="mission">
+    Find number <span id="target">3</span>!
+  </div>
 
-      const choices = root.querySelectorAll(".choice");
-      const choicesBox = root.querySelector(".choices");
-      const game = root.querySelector(".game");
-      const question = root.querySelector(".question");
-      const answer = root.querySelector(".answer");
-      const check = root.querySelector(".check");
-      const next = root.querySelector(".next");
-      const back = root.querySelector(".back");
-      const message = root.querySelector(".message");
-      const scoreText = root.querySelector(".score");
-      const levelText = root.querySelector(".level");
+  <div id="playArea"></div>
 
-      let operation = "+";
-      let correctAnswer = 0;
-      let score = 0;
-      let completed = 0;
-      let answered = false;
+  <div id="message"></div>
 
-      function randomNumber(max) {
-        return Math.floor(Math.random() * max) + 1;
-      }
+  <button id="next">
+    Next Round ➜
+  </button>
 
-      function makeQuestion() {
-        answered = false;
-        answer.value = "";
-        message.textContent = "";
-        next.style.display = "none";
-        check.style.display = "inline-block";
-        answer.disabled = false;
-
-        const level = Math.floor(completed / 5) + 1;
-        levelText.textContent = level;
-
-        const max = Math.min(10 + (level - 1) * 5, 50);
-
-        let a = randomNumber(max);
-        let b = randomNumber(max);
-
-        if (operation === "+") {
-          correctAnswer = a + b;
-          question.textContent = `${a} + ${b} = ?`;
-        }
-
-        if (operation === "-") {
-          if (b > a) [a, b] = [b, a];
-          correctAnswer = a - b;
-          question.textContent = `${a} − ${b} = ?`;
-        }
-
-        if (operation === "*") {
-          a = randomNumber(Math.min(10 + level, 20));
-          b = randomNumber(Math.min(10 + level, 20));
-          correctAnswer = a * b;
-          question.textContent = `${a} × ${b} = ?`;
-        }
-
-        if (operation === "/") {
-          b = randomNumber(Math.min(10 + level, 20));
-          correctAnswer = randomNumber(Math.min(10 + level, 20));
-          a = b * correctAnswer;
-          question.textContent = `${a} ÷ ${b} = ?`;
-        }
-
-        answer.focus();
-      }
-
-      choices.forEach(button => {
-        button.addEventListener("click", () => {
-          operation = button.dataset.op;
-          score = 0;
-          completed = 0;
-          scoreText.textContent = score;
-
-          choicesBox.style.display = "none";
-          game.style.display = "block";
-
-          makeQuestion();
-        });
-      });
-
-      check.addEventListener("click", () => {
-        if (answered) return;
-
-        if (answer.value.trim() === "") {
-          message.textContent = "✏️ Write your answer!";
-          message.style.color = "#e65100";
-          answer.focus();
-          return;
-        }
-
-        const userAnswer = Number(answer.value);
-
-        if (userAnswer === correctAnswer) {
-          answered = true;
-          score++;
-          completed++;
-
-          scoreText.textContent = score;
-
-          message.textContent = "🎉 GREAT WORK! 🎉";
-          message.style.color = "#2e7d32";
-
-          check.style.display = "none";
-          next.style.display = "inline-block";
-          answer.disabled = true;
-        } else {
-          message.textContent = "💪 Try Again!";
-          message.style.color = "#d32f2f";
-          answer.select();
-        }
-      });
-
-      next.addEventListener("click", makeQuestion);
-
-      answer.addEventListener("keydown", event => {
-        if (event.key === "Enter") {
-          check.click();
-        }
-      });
-
-      back.addEventListener("click", () => {
-        game.style.display = "none";
-        choicesBox.style.display = "grid";
-        message.textContent = "";
-      });
-    })();
-  </script>
 </div>
+
+<script>
+
+const playArea = document.getElementById("playArea");
+const targetBox = document.getElementById("target");
+const message = document.getElementById("message");
+const nextButton = document.getElementById("next");
+
+const scoreBox = document.getElementById("score");
+const levelBox = document.getElementById("level");
+const caughtBox = document.getElementById("caught");
+
+let score = 0;
+let caught = 0;
+let level = 1;
+let target = 3;
+let found = false;
+
+
+/* Random number */
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+/* Create the game */
+function startRound() {
+
+  playArea.innerHTML = "";
+  message.textContent = "";
+  nextButton.style.display = "none";
+  found = false;
+
+  /*
+    Difficulty increases every 3 successful rounds.
+  */
+
+  level = Math.floor(caught / 3) + 1;
+
+  levelBox.textContent = level;
+
+  const maxNumber =
+    Math.min(5 + level * 2, 20);
+
+  target = randomNumber(1, maxNumber);
+
+  targetBox.textContent = target;
+
+
+  /*
+    More numbers appear at higher levels.
+  */
+
+  const itemCount =
+    Math.min(7 + level, 15);
+
+
+  /*
+    Make sure the target exists.
+  */
+
+  createNumber(target);
+
+
+  /*
+    Create other random numbers.
+  */
+
+  for (let i = 1; i < itemCount; i++) {
+
+    createNumber(
+      randomNumber(1, maxNumber)
+    );
+  }
+}
+
+
+/* Create one clickable number */
+function createNumber(number) {
+
+  const button =
+    document.createElement("button");
+
+  button.className = "item";
+  button.textContent = number;
+
+  const maxX =
+    Math.max(0, playArea.clientWidth - 70);
+
+  const maxY =
+    Math.max(0, playArea.clientHeight - 70);
+
+  button.style.left =
+    randomNumber(5, maxX) + "px";
+
+  button.style.top =
+    randomNumber(5, maxY) + "px";
+
+
+  button.addEventListener("click", () => {
+
+    if (found) return;
+
+    if (number === target) {
+
+      found = true;
+
+      score += 10;
+      caught++;
+
+      scoreBox.textContent = score;
+      caughtBox.textContent = caught;
+
+      message.textContent =
+        "🎉 GREAT WORK! ⭐";
+
+      message.style.color = "#2e7d32";
+
+      /*
+        Highlight the correct number.
+      */
+
+      button.style.background = "#c8e6c9";
+      button.style.transform = "scale(1.25)";
+
+      document
+        .querySelectorAll(".item")
+        .forEach(item => {
+          item.disabled = true;
+        });
+
+      nextButton.style.display =
+        "inline-block";
+
+    } else {
+
+      score = Math.max(0, score - 1);
+
+      scoreBox.textContent = score;
+
+      message.textContent =
+        "💪 Not this one! Try again.";
+
+      message.style.color = "#e65100";
+
+      button.disabled = true;
+      button.style.opacity = "0.35";
+    }
+  });
+
+  playArea.appendChild(button);
+}
+
+
+/* Next round */
+nextButton.addEventListener("click", () => {
+  startRound();
+});
+
+
+/* Start */
+startRound();
+
+</script>
+
+</body>
+</html>
